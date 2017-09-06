@@ -58,7 +58,7 @@ comments.summary
 
 ### Tokenize Words
 
-We tokenize by word and remove comment stop words (the,a,...) We also filter out the custom stop words to remove names and titles based on the page name.
+We tokenize by word and remove common stop words (the,a,...) We also filter out the custom stop words to remove names and titles based on the page name.
 
 ```r
 #remove stop words
