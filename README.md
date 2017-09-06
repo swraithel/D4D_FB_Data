@@ -1,5 +1,5 @@
 # D4D_FB_Data
-Draft of EDA of FB data for JustPolitics
+Draft of EDA of FB data for [JustPolitics](https://github.com/Data4Democracy/just-politics)
 
 Key Files
 ------
@@ -11,10 +11,5 @@ Key Files
 
 Data Info
 ------
-Data below includes Facebook comments with associated candidate page info for the state of California
-
-[RData](https://github.com/swraithel/D4D_FB_Data/blob/master/cali.Rmd) - For R users to load data
-
-[Feather File](https://github.com/swraithel/D4D_FB_Data/blob/master/cali.Rmd) - For Python/R users to load data (see [feather](https://github.com/wesm/feather) for details)
-
+Due to size limitations I'm unable to upload the data direct to the repo. If you would like access to the data from the analysis message me on the slack or message in the #p-just-politics group and I can share. This data was pulled from a database that is still being added to, for access to the database talk to the #p-just-politics group or message Jonathan for access creditials.
 
