@@ -11,5 +11,5 @@ Key Files
 
 Data Info
 ------
-Due to size limitations I'm unable to upload the data direct to the repo. If you would like access to the data from the analysis message me on the slack or message in the #p-just-politics group and I can share. This data was pulled from a database that is still being added to, for access to the database talk to the #p-just-politics group or message Jonathan for access creditials.
+Due to size limitations I'm unable to upload the data direct to the repo. If you would like access to the data from the analysis message me on the slack or message in the #p-just-politics group and I can share. This data was pulled from a database that is still being added to, for access to the database talk to the #p-just-politics group or message Jonathan for access creditials. Once you have the creditials here is an [example](https://github.com/swraithel/D4D_FB_Data/blob/master/Example_Database_Pull.md)
 
