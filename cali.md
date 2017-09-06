@@ -1,6 +1,6 @@
 # D4D_JustPoli_FB
 
-#Example of EDA for FB Data
+# Example of EDA for FB Data
 
 ## Background of Data
 Most of what's shown here is just a subset of what's currently being collected. We have both page information from candidate's Facebook as well as comments posted on those respective pages. As of 09/04/17 most of comment data is the state of California, so I will be focusing on that state only. Additionally to keep this at a high level, I'm focusing on the top 4 pages (by number of comments) for easier visualization.
@@ -100,8 +100,10 @@ Grouping by page name we look at the top words to compare what words are most co
 
 ```r
 #seems to show better results with removal of names, may need some tweaking (remove people?)
-com_words %>%  group_by(name) %>% 
-  count(word, sort = TRUE) %>% filter(n>=2000) %>% group_by(name) %>% mutate("proportion" = n/sum(n)) %>% ggplot(aes(y=n,x=reorder(word, n)))+geom_bar(stat="identity")+facet_wrap(~name,scales="free_y")+coord_flip()
+com_words %>%  group_by(name) %>%
+  count(word, sort = TRUE) %>% filter(n >= 2000) %>% group_by(name) %>% mutate("proportion" = n /
+  sum(n)) %>% ggplot(aes(y = n, x = reorder(word, n))) + geom_bar(stat = "identity") +
+  facet_wrap( ~ name, scales = "free_y") + coord_flip()
 ```
 
 ![](cali_files/figure-html/wordsbarplot-1.png)<!-- -->
@@ -253,21 +255,21 @@ Now we will switch to looking at pairs of words. We go through a similar process
 ```r
 #calculate n-grams for word pairs (n = 2) and filter out stop words
 com_ngram_sep <-
-comments %>% unnest_tokens(ngram, message, token = "ngrams", n = 2) %>%  separate(ngram, c("word1", "word2"), sep = " ") %>% filter(!word1 %in% stop_words$word) %>%
-filter(!word2 %in% stop_words$word)
+  comments %>% unnest_tokens(ngram, message, token = "ngrams", n = 2) %>%  separate(ngram, c("word1", "word2"), sep = " ") %>% filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word)
 
 #filter out manual stop words
 com_ngram_sep <-
-com_ngram_sep %>% filter(!word1 %in% mystopwords$word) %>%
-filter(!word2 %in% mystopwords$word)
+  com_ngram_sep %>% filter(!word1 %in% mystopwords$word) %>%
+  filter(!word2 %in% mystopwords$word)
 
 #combine back together to caclulate tf_idf
 com_ngram <- com_ngram_sep %>% unite(ngram, word1, word2, sep = " ")
 
 #calculate tf_idf
 com_ngram_tfidf <- com_ngram %>% count(name, ngram) %>%
-bind_tf_idf(ngram, name, n) %>%
-arrange(desc(tf_idf))
+  bind_tf_idf(ngram, name, n) %>%
+  arrange(desc(tf_idf))
 ```
 
 ## Plot by Page 
@@ -279,7 +281,7 @@ top_n(15) %>%
 ungroup %>%  ggplot(aes(ngram, tf_idf, fill = name)) +
 geom_col(show.legend = FALSE) +
 labs(x = NULL, y = "tf-idf") +
-facet_wrap( ~ name, ncol = 2, scales = "free") +
+facet_wrap(~ name, ncol = 2, scales = "free") +
 coord_flip()
 ```
 
@@ -297,12 +299,13 @@ Network graph of words pairs showing the strength of the word pair by number of 
 
 ```r
 #count word pairs to create network graph
-bigram_counts <- com_ngram_sep  %>%  count(word1, word2, sort = TRUE)
+bigram_counts <-
+com_ngram_sep  %>%  count(word1, word2, sort = TRUE)
 
 #filter by min num counts and convert to graph form
 bigram_graph <- bigram_counts %>%
-  filter(n > 400) %>%
-  graph_from_data_frame()
+filter(n > 400) %>%
+graph_from_data_frame()
 
 
 set.seed(999)
@@ -312,11 +315,15 @@ a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
 
 #network graph of ngrams - strength of edge based on num of occurences
 ggraph(bigram_graph, layout = "fr") +
-  geom_edge_link(aes(edge_alpha = n), show.legend = FALSE,
-                 arrow = a, end_cap = circle(.07, 'inches')) +
-  geom_node_point(color = "lightblue", size = 5) +
-  geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
-  theme_void()
+geom_edge_link(
+aes(edge_alpha = n),
+show.legend = FALSE,
+arrow = a,
+end_cap = circle(.07, 'inches')
+) +
+geom_node_point(color = "lightblue", size = 5) +
+geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+theme_void()
 ```
 
 ![](cali_files/figure-html/ngramnetplot-1.png)<!-- -->
@@ -330,22 +337,23 @@ Now instead of looking at adjacent words we look at another network graph to loo
 ```r
 library(widyr)
 
+
 #find pairwise correlation for words within page name
-word_cors <- com_words %>% 
-  group_by(word) %>%
-  filter(n() >= 100) %>%
-  pairwise_cor(word, name, sort = TRUE)
+word_cors <- com_words %>%
+group_by(word) %>%
+filter(n() >= 100) %>%
+pairwise_cor(word, name, sort = TRUE)
 
 
 
 word_cors %>%
-  filter(correlation > .50) %>%
-  graph_from_data_frame() %>%
-  ggraph(layout = "fr") +
-  geom_edge_link(aes(edge_alpha = correlation), show.legend = FALSE) +
-  geom_node_point(color = "lightblue", size = 5) +
-  geom_node_text(aes(label = name), repel = TRUE) +
-  theme_void()
+filter(correlation > .50) %>%
+graph_from_data_frame() %>%
+ggraph(layout = "fr") +
+geom_edge_link(aes(edge_alpha = correlation), show.legend = FALSE) +
+geom_node_point(color = "lightblue", size = 5) +
+geom_node_text(aes(label = name), repel = TRUE) +
+theme_void()
 ```
 
 ![](cali_files/figure-html/ngramnetpair-1.png)<!-- -->
