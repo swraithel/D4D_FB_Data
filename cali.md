@@ -191,7 +191,7 @@ name)) + geom_col(show.legend = FALSE) + facet_wrap( ~ name, ncol = 2, scales =
 
 ### Word and Document Freq (TF_IDF)
 
-Here we calculate the term frequency and inverse frequency to measure how important a word is to a page. The TF_IDF tries to find sweet spot between words that are used often (high TF) versus words that not commonly found in other pages (high TF/rare).
+Here we calculate the term frequency and inverse frequency to measure how important a word is to a page. The TF_IDF tries to find sweet spot between words that are used often (high TF) versus words that not commonly found in other pages (high IDF/rare).
 
 
 
