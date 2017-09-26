@@ -1,7 +1,7 @@
 ---
 title: "Summarise_FB_Comments"
 author: "Seth_Raithel"
-date: "`r Sys.Date()`"
+date: "`2017-09-26"
 output: 
   html_document: 
     keep_md: yes
@@ -43,7 +43,6 @@ summary_congress <-
 summary_congress <-
   left_join(summary_congress, total_posts, by = "name")
 
-DT::datatable(summary_congress)
 ```
 
 
